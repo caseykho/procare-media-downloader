@@ -36,6 +36,14 @@ echo -n "your_token_here" > credentials.txt
 
 This fetches all videos from the API and saves them to `raw_video_list_response.json`.
 
+The date range is configured at the top of the script:
+```bash
+START_YEAR=2023
+START_MONTH=2
+END_YEAR=2026
+END_MONTH=2
+```
+
 #### Step 2: Download Videos
 
 ```bash
@@ -80,62 +88,62 @@ END_YEAR=2026
 END_MONTH=2
 ```
 
-The script automatically stops after 3 consecutive months with no photos.
+[!NOTE]
+	The script automatically stops after 3 consecutive months with no photos.
 
 #### Step 2: Download Photos
 
-```bash
-./download_photos.sh
-```
+	```bash
+	./download_photos.sh
+	```
 
-Photos are saved to the `photos/` directory. Filenames are determined by the server's Content-Disposition header.
+	Photos are saved to the `photos/` directory. Filenames are determined by the server's Content-Disposition header.
 
-**Options:**
+	**Options:**
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `-n <limit>` | Number of photos to download (0 = all) | 0 |
-| `-t <seconds>` | Base sleep time between downloads | 2 |
-| `-j <seconds>` | Max random jitter added to sleep | 2 |
-| `-f <file>` | Input JSON file | raw_photo_list_response.json |
+	| Option | Description | Default |
+	|--------|-------------|---------|
+	| `-n <limit>` | Number of photos to download (0 = all) | 0 |
+	| `-t <seconds>` | Base sleep time between downloads | 2 |
+	| `-j <seconds>` | Max random jitter added to sleep | 2 |
+	| `-f <file>` | Input JSON file | raw_photo_list_response.json |
 
-**Examples:**
+	**Examples:**
 
-```bash
-./download_photos.sh -n 20        # Download first 20 photos
-./download_photos.sh -t 5 -j 3    # Custom throttling
-```
+	```bash
+	./download_photos.sh -n 20        # Download first 20 photos
+	./download_photos.sh -t 5 -j 3    # Custom throttling
+	```
 
----
+	---
 
 ## Resumable Downloads
 
-Both download scripts support resuming interrupted downloads:
+	Both download scripts support resuming interrupted downloads:
 
-- **Videos**: Skips files that already exist in `videos/`
-- **Photos**: Tracks downloaded IDs in `photos/.downloaded_ids`
+	- **Videos**: Skips files that already exist in `videos/`
+	- **Photos**: Tracks downloaded IDs in `photos/.downloaded_ids`
 
-If a download is interrupted, run the script again to continue where you left off.
+	If a download is interrupted, run the script again to continue where you left off.
 
 ## Output Files
 
-| File | Description |
-|------|-------------|
-| `raw_video_list_response.json` | Video metadata from API |
-| `raw_photo_list_response.json` | Photo metadata from API |
-| `videos/` | Downloaded MP4 video files |
-| `photos/` | Downloaded photo files |
+	| File | Description |
+	|------|-------------|
+	| `raw_video_list_response.json` | Video metadata from API |
+	| `raw_photo_list_response.json` | Photo metadata from API |
+	| `videos/` | Downloaded MP4 video files |
+	| `photos/` | Downloaded photo files |
 
 ## Notes
 
-- Authentication tokens expire periodically. If you receive authentication errors, obtain a new token.
-- Throttling is built-in to avoid overwhelming the server. The default is 2-4 seconds between requests.
-- The date range for video retrieval is hardcoded in the URL within `list_videos.sh`. Modify the `datetime_from` and `datetime_to` parameters if needed.
-- The date range for photo retrieval is configured via variables at the top of `list_photos.sh`.
-- Some photos might be missing the .jpg file extension
-- Some media may be listed but ultimately fail to download because they have already been deleted from the backend. The file will be saved with the response
-```
-<?xml version="1.0" encoding="UTF-8"?>
-<Error><Code>AccessDenied</Code><Message>Access Denied</Message></Error>
-```
+	- Authentication tokens expire periodically. If you receive authentication errors, obtain a new token.
+	- Throttling is built-in to avoid overwhelming the server. The default is 2-4 seconds between requests.
+	- The date range for both video and photo retrieval is configured via variables at the top of the respective list scripts.
+	- Some photos might be missing the .jpg file extension
+	- Some media may be listed but ultimately fail to download because they have already been deleted from the backend. The file will be saved with the response
+	```
+	<?xml version="1.0" encoding="UTF-8"?>
+	<Error><Code>AccessDenied</Code><Message>Access Denied</Message></Error>
+	```
 SHA-1 0dde8fd9111d807e202b2fb37f8bcc4052fd861e
