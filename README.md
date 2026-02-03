@@ -88,8 +88,8 @@ END_YEAR=2026
 END_MONTH=2
 ```
 
-[!NOTE]
-	The script automatically stops after 3 consecutive months with no photos.
+> [!NOTE]
+> The script automatically stops after 3 consecutive months with no photos.
 
 #### Step 2: Download Photos
 
@@ -142,8 +142,10 @@ END_MONTH=2
 	- The date range for both video and photo retrieval is configured via variables at the top of the respective list scripts.
 	- Some photos might be missing the .jpg file extension
 	- Some media may be listed but ultimately fail to download because they have already been deleted from the backend. The file will be saved with the response
-	```
-	<?xml version="1.0" encoding="UTF-8"?>
-	<Error><Code>AccessDenied</Code><Message>Access Denied</Message></Error>
-	```
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>AccessDenied</Code><Message>Access Denied</Message></Error>
+
 SHA-1 0dde8fd9111d807e202b2fb37f8bcc4052fd861e
+```
